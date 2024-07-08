@@ -1,0 +1,14 @@
+!function(){"use strict";let t={LIST:"#bug_table_widget > ul",LIST_ITEM:"li.bug-split-view-list-item",SUBMITTER:"div.small.gray",CONTAINER:"div.media-body.flex-1"};async function e(t){try{let e=await fetch(t),n=await e.text();return n.split("\n").map(t=>t.trim().toLowerCase()).filter(Boolean)}catch(o){return console.error("Error fetching names:",o),[]}}function n(e){let n=document.querySelector(t.LIST);if(!n){console.log("UL element not found");return}console.log("UL element found:",n);let o=n.querySelectorAll(t.LIST_ITEM);console.log("Number of list items found:",o.length),o.forEach((n,o)=>{let r=n.querySelector(t.SUBMITTER);if(r){let l=r.textContent.trim(),a=function t(e){let n=e.split("|");if(n.length>=4){let o=n[3].trim(),r=o.match(/^(.*?)\s*\(/);return r?r[1].trim().toLowerCase():""}return""}(l);console.log(`Item ${o+1} - Submitter name:`,a);let i=n.querySelector(t.CONTAINER);e.includes(a)?(console.log(`Match found for ${a}`),i?function t(e,n,o,r,l){let a=document.createElement("span");a.textContent=n,a.className="pr-2 fast-track-indicator",a.style.cssText=`
+            position: relative;
+            background-color: ${o};
+            border: 1px solid ${r};
+            padding: 3px;
+            color: ${l};
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 400;
+            font-family: "Source Sans Pro";
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-left: 1px;
+        `,e.appendChild(a),console.log("Indicator added to element:",e)}(i,"Fast-track Onboarding","#78eac1","#cccccc","222222"):console.log("Container element not found for matched submitter")):console.log(`No match found for ${a}`)}else console.log(`Item ${o+1} - Submitter element not found`)})}async function o(){console.log("Fetching names from GitHub...");let t=await e("https://raw.githubusercontent.com/CharlieMrFox/FastTrackOnboarding/main/screennamesList.txt");console.log("Names fetched successfully:",t),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",()=>n(t)):n(t)}o()}();
